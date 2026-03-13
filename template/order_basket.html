@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+        <!-- Links -->
+        <ul class="navbar-nav">
+            <a class="navbar-brand" href="/">
+                <span class="navbar-text" style="font-family: Rockwell Extra Bold; colour: white;">Bean & Brew</span>
+            </a>
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="/menu">Our Menu</a></li>
+            {% if current_user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="/user">{{ current_user.name }}'s Page</a></li>
+                <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+            {% else %}
+                <li class="nav-item"><a class="nav-link " href="/login">Log In</a></li>
+                <li class="nav-item"><a class="nav-link" href="/signup">Sign Up</a></li>
+            {% endif %}
+        </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if current_user.is_authenticated %}
+                <li class="nav-item ml-auto"><span class="navbar-text">{{ current_user.email }}</span></li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link active" href="/order">Your Order</a></li>
+            </ul>
+        </div>
+</nav>
+
+<h1>Your Basket</h1>
+    {% if order_basket %}
+    <ul>
+        {% for product in order_basket %}
+        <li>
+            <h2>{{ product.name }}</h2>
+            <p>£{{ product.price }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    <a class="btn btn-secondary" href="/menu" role="button">Continue Shopping</a>
+    <a class="btn btn-primary" href="/checkout" role="button">Check Out</a>
+    <a class="btn btn-danger" href="/clear" role="button">Clear Basket</a>
+    {% else %}
+    <p>Your basket is empty!</p>
+    <a class="btn btn-secondary" href="/menu" role="button">Continue Shopping</a>
+    {% endif %}
+
+{% endblock %}

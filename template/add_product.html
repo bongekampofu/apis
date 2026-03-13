@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.name.label }} {{ form.name }} <br>
+    {{ form.price.label }} {{ form.price }} <br>
+    {{ form.category.label }} {{ form.category }} <br>
+    {{ form.description.label }} {{ form.description }} <br>
+    {{ form.image.label }} {{ form.image }} <br><br>
+
+    <button type="submit">Add Product</button>
+</form>
+
+</body>
+{% endblock %}

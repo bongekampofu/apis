@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <div class="container-fluid">
+        <!-- Links -->
+        <ul class="navbar-nav">
+            <a class="navbar-brand" href="/">
+                <span class="navbar-text" style="font-family: 'Rockwell Extra Bold'; color: white;">Bean & Brew</span>
+            </a>
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('main.add_product') }}">Add a Product</a>
+            </li>
+
+            <li class="nav-item"><a class="nav-link active" href="/menu">Our Menu</a></li>
+            {% if current_user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="/user">{{ current_user.first_name }}'s Page</a></li>
+                <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+            {% else %}
+                <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                <li class="nav-item"><a class="nav-link" href="/signup">Sign Up</a></li>
+            {% endif %}
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            {% if current_user.is_authenticated %}
+                <li class="nav-item ml-auto"><span class="navbar-text">{{ current_user.email_address }}</span></li>
+            {% endif %}
+            <li class="nav-item"><a class="nav-link" href="/order">Your Order</a></li>
+        </ul>
+    </div>
+</nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+{% if not products %}
+    <p>Come back later!</p>
+{% else %}
+    <div class="container">
+        <div class="row">
+            {% for product in products %}
+                <div class="col-md-4 mb-4">
+                    <div class="product card">
+                        <div class="card-body">
+
+                           <img src="{{ url_for('static', filename='images/' ~ product.image) }}"
+     class="card-img-top"
+     alt="{{ product.name }}"
+     style="height: 200px; object-fit: cover; width: 100%;">
+
+
+                            <h5 class="card-title mt-2">{{ product.name }}</h5>
+                            <h6 class="card-subtitle text-muted">£{{ product.price }}</h6>
+                            <p class="card-text">{{ product.category }}</p>
+                            <p class="card-text">{{ product.description }}</p>
+
+                            <a class="btn btn-danger" href="/order/add/{{ product.name }}" role="button">Add to Order</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+{% endblock %}

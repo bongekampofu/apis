@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <div class="container-fluid">
+        <ul class="navbar-nav">
+            <a class="navbar-brand" href="/">
+                <span class="navbar-text" style="font-family: Rockwell Extra Bold; color: white;">
+                    Bean & Brew
+                </span>
+            </a>
+        </ul>
+    </div>
+</nav>
+
+<div class="card mt-4 mx-auto" style="max-width: 600px;">
+    <div class="card-body">
+        <h1 class="card-title">Checkout</h1>
+        <h3 class="card-subtitle text-muted">Subtotal: £{{ price }}</h3>
+        <h4 class="card-subtitle text-muted">{{ summary }}</h4>
+        <p class="card-text mt-3">
+            Please enter your choice of store and your personal details to complete the payment.
+        </p>
+
+        <form method="POST">
+            {{ form.csrf_token }}
+
+            <p class="mb-3">
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control", value=current_user.first_name ~ ' ' ~ current_user.last_name) }}
+            </p>
+
+            <p class="mb-3">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control", value=current_user.email_address) }}
+            </p>
+
+            <p class="mb-3">
+                {{ form.phone.label(class="form-label") }}
+                {{ form.phone(class="form-control") }}
+            </p>
+
+            <p class="mb-3">
+                {{ form.store.label(class="form-label") }}
+                {{ form.store(class="form-control") }}
+            </p>
+
+            <p class="mt-4">
+                <input type="submit" value="Pay with Card" class="btn btn-primary btn-lg w-100">
+            </p>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
